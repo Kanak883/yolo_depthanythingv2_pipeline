@@ -1,0 +1,250 @@
+#!/bin/bash
+# Raspberry Pi Full Environment Info Script
+# Saves output to pi_specs_full.txt
+
+OUTPUT="pi_specs_full.txt"
+
+{
+echo "==============================="
+echo " 📌 Raspberry Pi Experiment Environment "
+echo "==============================="
+
+echo -e "\n--- CPU INFO ---"
+cat /proc/cpuinfo | grep -E "model name|Hardware|Revision|Serial"
+
+echo -e "\n--- MEMORY INFO ---"
+free -h
+cat /proc/meminfo | grep MemTotal
+
+echo -e "\n--- DISK INFO ---"
+df -h /
+
+echo -e "\n--- OS INFO ---"
+cat /etc/os-release
+uname -a
+
+echo -e "\n--- GPU + ARM MEMORY ---"
+vcgencmd get_mem gpu
+vcgencmd get_mem arm
+
+echo -e "\n--- TEMPERATURE ---"
+vcgencmd measure_temp
+
+echo -e "\n--- CLOCK SPEEDS ---"
+vcgencmd measure_clock arm
+vcgencmd measure_clock core
+
+echo -e "\n==============================="
+echo " 📌 SOFTWARE / TECH STACK INFO "
+echo "==============================="
+
+echo -e "\n--- PYTHON VERSION ---"
+python3 --version
+
+echo -e "\n--- PIP PACKAGES (main ones) ---"
+pip list | grep -E "onnxruntime|numpy|opencv"
+
+echo -e "\n--- VIRTUAL ENV LOCATION ---"
+echo $VIRTUAL_ENV
+
+} > "$OUTPUT"
+
+echo "✅ Full environment info saved to $OUTPUT"
+
+imap@raspberrypi:~ $ uname -a
+Linux raspberrypi 6.12.34+rpt-rpi-2712 #1 SMP PREEMPT Debian 1:6.12.34-1+rpt1~bookworm (2025-06-26) aarch64 GNU/Linux
+imap@raspberrypi:~ $ cat /proc/cpuinfo
+processor	: 0
+BogoMIPS	: 108.00
+Features	: fp asimd evtstrm aes pmull sha1 sha2 crc32 atomics fphp asimdhp cpuid asimdrdm lrcpc dcpop asimddp
+CPU implementer	: 0x41
+CPU architecture: 8
+CPU variant	: 0x4
+CPU part	: 0xd0b
+CPU revision	: 1
+
+processor	: 1
+BogoMIPS	: 108.00
+Features	: fp asimd evtstrm aes pmull sha1 sha2 crc32 atomics fphp asimdhp cpuid asimdrdm lrcpc dcpop asimddp
+CPU implementer	: 0x41
+CPU architecture: 8
+CPU variant	: 0x4
+CPU part	: 0xd0b
+CPU revision	: 1
+
+processor	: 2
+BogoMIPS	: 108.00
+Features	: fp asimd evtstrm aes pmull sha1 sha2 crc32 atomics fphp asimdhp cpuid asimdrdm lrcpc dcpop asimddp
+CPU implementer	: 0x41
+CPU architecture: 8
+CPU variant	: 0x4
+CPU part	: 0xd0b
+CPU revision	: 1
+
+processor	: 3
+BogoMIPS	: 108.00
+Features	: fp asimd evtstrm aes pmull sha1 sha2 crc32 atomics fphp asimdhp cpuid asimdrdm lrcpc dcpop asimddp
+CPU implementer	: 0x41
+CPU architecture: 8
+CPU variant	: 0x4
+CPU part	: 0xd0b
+CPU revision	: 1
+
+Revision	: d04170
+Serial		: 9ed5a0343fa9ad6c
+Model		: Raspberry Pi 5 Model B Rev 1.0
+imap@raspberrypi:~ $ free -h
+               total        used        free      shared  buff/cache   available
+Mem:           7.9Gi       978Mi       3.7Gi       110Mi       3.5Gi       6.9Gi
+Swap:          511Mi          0B       511Mi
+imap@raspberrypi:~ $ vcgencmdget_mem arm
+bash: vcgencmdget_mem: command not found
+imap@raspberrypi:~ $ vcgencmdget_mem gpu
+bash: vcgencmdget_mem: command not found
+imap@raspberrypi:~ $ vcgencmdget_measure_temp
+bash: vcgencmdget_measure_temp: command not found
+imap@raspberrypi:~ $ vcgencmd get_mem arm
+arm=1016M
+imap@raspberrypi:~ $ vcgencmd get_mem gpu
+gpu=8M
+imap@raspberrypi:~ $ vcgencmd measure_temp
+temp=56.5'C
+imap@raspberrypi:~ $ cat /etc/os-release
+PRETTY_NAME="Debian GNU/Linux 12 (bookworm)"
+NAME="Debian GNU/Linux"
+VERSION_ID="12"
+VERSION="12 (bookworm)"
+VERSION_CODENAME=bookworm
+ID=debian
+HOME_URL="https://www.debian.org/"
+SUPPORT_URL="https://www.debian.org/support"
+BUG_REPORT_URL="https://bugs.debian.org/"
+imap@raspberrypi:~ $ vcgencmd version
+2025/05/08 15:13:17 
+Copyright (c) 2012 Broadcom
+version 69471177 (release) (embedded)
+imap@raspberrypi:~ $ nano pi_specs.sh
+imap@raspberrypi:~ $ 
+
+
+
+
+
+
+
+
+
+final
+===============================
+ 📌 Raspberry Pi Experiment Environment 
+===============================
+
+--- CPU INFO ---
+Revision	: d04170
+Serial		: 9ed5a0343fa9ad6c
+
+--- MEMORY INFO ---
+               total        used        free      shared  buff/cache   available
+Mem:           7.9Gi       1.0Gi       3.6Gi       157Mi       3.5Gi       6.9Gi
+Swap:          511Mi          0B       511Mi
+MemTotal:        8252624 kB
+
+--- DISK INFO ---
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/mmcblk0p2  117G   24G   88G  21% /
+
+--- OS INFO ---
+PRETTY_NAME="Debian GNU/Linux 12 (bookworm)"
+NAME="Debian GNU/Linux"
+VERSION_ID="12"
+VERSION="12 (bookworm)"
+VERSION_CODENAME=bookworm
+ID=debian
+HOME_URL="https://www.debian.org/"
+SUPPORT_URL="https://www.debian.org/support"
+BUG_REPORT_URL="https://bugs.debian.org/"
+Linux raspberrypi 6.12.34+rpt-rpi-2712 #1 SMP PREEMPT Debian 1:6.12.34-1+rpt1~bookworm (2025-06-26) aarch64 GNU/Linux
+
+--- GPU + ARM MEMORY ---
+gpu=8M
+arm=1016M
+
+--- TEMPERATURE ---
+temp=56.0'C
+
+--- CLOCK SPEEDS ---
+frequency(0)=1500009472
+frequency(0)=500007584
+
+===============================
+ 📌 SOFTWARE / TECH STACK INFO 
+===============================
+
+--- PYTHON VERSION ---
+Python 3.11.2
+
+--- PIP PACKAGES (main ones) ---
+numpy                              2.2.6
+opencv-python                      4.12.0.88
+
+--- VIRTUAL ENV LOCATION ---
+
+
+===============================
+ 📌 Raspberry Pi Experiment Environment 
+===============================
+
+--- CPU INFO ---
+Revision	: d04170
+Serial		: 9ed5a0343fa9ad6c
+
+--- MEMORY INFO ---
+               total        used        free      shared  buff/cache   available
+Mem:           7.9Gi       1.0Gi       3.6Gi       157Mi       3.5Gi       6.9Gi
+Swap:          511Mi          0B       511Mi
+MemTotal:        8252624 kB
+
+--- DISK INFO ---
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/mmcblk0p2  117G   24G   88G  21% /
+
+--- OS INFO ---
+PRETTY_NAME="Debian GNU/Linux 12 (bookworm)"
+NAME="Debian GNU/Linux"
+VERSION_ID="12"
+VERSION="12 (bookworm)"
+VERSION_CODENAME=bookworm
+ID=debian
+HOME_URL="https://www.debian.org/"
+SUPPORT_URL="https://www.debian.org/support"
+BUG_REPORT_URL="https://bugs.debian.org/"
+Linux raspberrypi 6.12.34+rpt-rpi-2712 #1 SMP PREEMPT Debian 1:6.12.34-1+rpt1~bookworm (2025-06-26) aarch64 GNU/Linux
+
+--- GPU + ARM MEMORY ---
+gpu=8M
+arm=1016M
+
+--- TEMPERATURE ---
+temp=56.0'C
+
+--- CLOCK SPEEDS ---
+frequency(0)=1500009472
+frequency(0)=500007584
+
+===============================
+ 📌 SOFTWARE / TECH STACK INFO 
+===============================
+
+--- PYTHON VERSION ---
+Python 3.11.2
+
+--- PIP PACKAGES (main ones) ---
+numpy                              2.2.6
+opencv-python                      4.12.0.88
+
+--- VIRTUAL ENV LOCATION ---
+/home/imap/Desktop/yolo_depth/yoloenv
+
+
+
+
